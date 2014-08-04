@@ -1,0 +1,8 @@
+*.ilk
+*.pdb
+ipch/
+/dxfreetype/Debug/
+/dxfreetype/Release
+*.sdf
+*.opensdf
+*.suo
