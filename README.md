@@ -4,8 +4,8 @@ Freetype Library for DirectX9
 죽어라 찾아도 팁도 사용법도 example도 안 나오고 해서 걍 내가 만듬.
 
 ## Requires
-* compile: 
-* truetype font
+* directx sdk (june 2010)
+* freetype (v 2.5?)
 
 ## ability
 * texture mask
