@@ -1,18 +1,14 @@
 #include "DXFont.h"
 #include <vector>
 
-int DXFont::DXFontCnt=0;
-FT_Library DXFont::ftLib;
 	
 BOOL DXFont::InitDXFont(IDirect3DDevice9* device) {
 	// set device
 	this->device = device;
 
 	// init freetype library
-	if (!(DXFontCnt++)) {
-		if (FT_Init_FreeType(&ftLib)) {
-			return FALSE;
-		}
+	if (FT_Init_FreeType(&ftLib)) {
+		return FALSE;
 	}
 
 	// make font (fallback)
@@ -23,6 +19,10 @@ BOOL DXFont::InitDXFont(IDirect3DDevice9* device) {
 
 	if (FT_Stroker_New(ftLib, &ftStroker))
 		return FALSE;
+	
+	// TODO: too small size can cause error
+	//if (fontData->fontHeight < 20)
+	//	fontData->fontHeight = 20;
 
 	// set size and stroke
 	FT_Set_Char_Size(ftFace, fontData->fontHeight * 64, 0,
@@ -31,9 +31,14 @@ BOOL DXFont::InitDXFont(IDirect3DDevice9* device) {
 		0);
 	
 	// fill glyphHeight with simple index
-	FT_Load_Glyph(ftFace,0,FT_LOAD_DEFAULT);
+	fontData->glyphHeight = ::FT_MulFix(ftFace->bbox.yMax - ftFace->bbox.yMin, ftFace->size->metrics.y_scale)/64;
+
+	/* Old method
+	FT_Get_Char_Index(ftFace, L'¹ß');
+	FT_Get_Char_Index(ftFace, L'^');
+	FT_Load_Glyph(ftFace,ind,FT_LOAD_DEFAULT);
 	FT_Render_Glyph(ftFace->glyph, FT_RENDER_MODE_NORMAL);
-	fontData->glyphHeight = ftFace->glyph->metrics.vertAdvance/64;
+//	fontData->glyphHeight = ftFace->glyph->metrics.vertAdvance/64;*/
 
 	// if there's texture for DXFont, load it.
 	fontTextureLoaded = false;
@@ -43,23 +48,52 @@ BOOL DXFont::InitDXFont(IDirect3DDevice9* device) {
 		}
 	}
 
+	// TODO: create texture
+	if (FAILED(D3DXCreateTexture(device, TEXTURE_WIDTH, TEXTURE_HEIGHT, 1, 0,
+		D3DFMT_A8R8G8B8, D3DPOOL_MANAGED, &glyphTexture)))
+		return FALSE;
+	// glyphTexture
+
 	// clear texture cache
 	texture_cache.clear();
+	cx = 0;
+	cy = 0;
 	return TRUE;
 }
 
-BOOL DXFont::Release() {
-	if (!--DXFontCnt) {
-		return FT_Done_FreeType(ftLib);
+BOOL DXFont::getAvailableGlyphSlot(DXFontTexture *data) {
+	int h = fontData->glyphHeight + fontData->borderWidth*2;
+	if (cx+data->width > TEXTURE_WIDTH) {
+		cx = 0;
+		cy += h;
+	}
+	if (cy+h > TEXTURE_HEIGHT) {
+		// no place left for new chr
+		data->unusable = true;
+		return FALSE;
 	}
 	
-	std::map<int,DXFontTexture*>::iterator it;
-	for (it=texture_cache.begin(); it != texture_cache.end(); ++it) {
-		delete it->second;
-	}
-	texture_cache.clear();
+	data->x = cx;
+	data->y = cy+fontData->borderWidth*2;
+	cx += data->width;
+}
 
-	return TRUE;
+BOOL DXFont::Release() {
+	if (ftLib) {
+		FT_Done_FreeType(ftLib);
+	
+		glyphTexture->Release();
+
+		// TODO is releasing routing OKAY?
+		std::map<int, DXFontTexture*>::iterator it;
+		for (it=texture_cache.begin(); it != texture_cache.end(); it++) {
+			delete it->second;
+		}
+		texture_cache.clear();
+
+		ftLib = 0;
+		return TRUE;
+	}
 }
 
 
@@ -88,6 +122,7 @@ BOOL DXFont::RenderChar(TCHAR chr, bool render, int *width, int *height) {
 
 D3DCOLOR DXFont::getColor(int x, int y, int a) {
 	// if texture exists then get from it
+	if (y < 0) y+=fontTexture.height;
 	if (fontTextureLoaded) {
 		int clr;
 		D3DLOCKED_RECT lRect;
@@ -119,7 +154,7 @@ BOOL DXFont::drawChar(TCHAR chr, D3DCOLOR* pixels, int textureWidth, int x, int 
 				if (Color > 0) {
 					int px = x+i+border;
 					int py = fontData->glyphHeight - ftFace->glyph->bitmap_top +y+j;
-					pixels[px + py*textureWidth] = getColor(px, py, Color);
+					pixels[px + py*textureWidth] = getColor(px, fontData->glyphHeight-j, Color);
 				}
 			}
 		}
@@ -183,32 +218,27 @@ DXFontTexture* DXFont::getFontTexture(TCHAR chr, int *width, int *height) {
 		if (RenderChar(chr, true, &wid, &hei)) {
 			// add border (necessary)
 			int border = fontData->borderWidth;
-			wid += border*4;
-			hei = fontData->glyphHeight + border*4;	// IMPORTANT! glyph height
+			wid += border*2;
+			hei = fontData->glyphHeight*1.1f + border*2;	// IMPORTANT! glyph height
 
-			// create texture
-			LPDIRECT3DTEXTURE9 pTex;
-			if( FAILED( device->CreateTexture( wid, hei, 1, 0, D3DFMT_A8R8G8B8, D3DPOOL_MANAGED, &pTex, NULL ) ) )
-			{
-				// texture creation failed
+			// get new position for draw
+			DXFontTexture *t = new DXFontTexture();
+			t->width = wid;
+			t->height = hei;
+			if (!getAvailableGlyphSlot(t))
 				return 0;
-			}
 
 			D3DCOLOR *pixels;
 			D3DLOCKED_RECT lRect;
-			if (FAILED(pTex->LockRect(0, &lRect, NULL, 0)))
+			if (FAILED(glyphTexture->LockRect(0, &lRect, NULL, 0)))
 				return 0;
 			pixels = (D3DCOLOR*)lRect.pBits;
 
 			// draw text
-			drawChar(chr, pixels, wid, border, border); 
-			pTex->UnlockRect(0);
+			drawChar(chr, pixels, TEXTURE_WIDTH, border+t->x, border+t->y); 
+			glyphTexture->UnlockRect(0);
 
 			// add to array
-			DXFontTexture *t = new DXFontTexture();
-			t->width = wid;
-			t->height = hei;
-			t->texture = pTex;
 			texture_cache.insert(std::make_pair(chrIndex, t));
 
 			if (width != 0)
@@ -232,9 +262,4 @@ DXFontTexture* DXFont::getFontTexture(TCHAR chr, int *width, int *height) {
 
 DXFont::~DXFont() {
 	Release();
-}
-
-DXFontTexture::~DXFontTexture() {
-	if (texture)
-		texture->Release();
 }

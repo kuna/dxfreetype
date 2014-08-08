@@ -48,7 +48,9 @@ public:
 	
 	VOID BeginSprite();
 	VOID DrawTexture(DXTexture *texture, RECT *srcRect, RECT *dstRect, D3DXCOLOR rgba, D3DXVECTOR2 *rotateCentre, double rotation, int blending, int filter);
+	VOID BeginString();
 	VOID DrawString(DXFont *font, TCHAR *str, int x, int y, int width, int size, int align, D3DCOLOR clr=0xFFFFFFFF);
+	VOID EndString();
 	VOID EndSprite();
 
 	IDirect3D9* GetD3D9();

@@ -45,6 +45,9 @@ dxGame.EndScene();
 
 ```
 
+## minorlog
+* 140808 - very much big performance up (you should use release mode to get full performance)
+
 ## Environment
 * vs 2010 SP1
 

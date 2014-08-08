@@ -20,30 +20,85 @@ VOID Render() {
 
 	// http://irrlicht.sourceforge.net/docu/example006.html
 	// test
+	
 	dxGame.BeginSprite();
-	dxGame.DrawString(&fonts[0], L"ÇÑ±Û ABCD «Ò«é«®", 10, 10, 1200, 80, 0);
-	dxGame.DrawString(&fonts[0], L"ÇÑ±Û ABCD «Ò«é«®", 10, 120, 400, 100, 0);
+	/*
+	dxGame.BeginString();
+	dxGame.DrawString(&fonts[0], L"ÇÑ±Û ABCD «Ò«é«®", 10, 400, 1200, 20, 0);
+	dxGame.EndString();
+
+	*/
+
+	dxGame.BeginString();
+	dxGame.DrawString(&fonts[0], L"ÇÑ±Û ABCD «Ò«é«®", 0, 0, 1200, 80, 0);
+	dxGame.DrawString(&fonts[1], L"ÇÑ±Û ABCD «Ò«é«®!@#$#$^%$^&", 10, 120, 400, 100, 0);
 	dxGame.DrawString(&fonts[0], L"ABCDabcdefghijklmnopqrstuv", 10, 220, 400, 100, 0);
 	dxGame.DrawString(&fonts[0], L"abgABG°¡³ª´ê", 0, 320, 600, 50, 0);
 	dxGame.DrawString(&fonts[0], L"abgABG°¡³ª´ê", 0, 420, 600, 50, 1);
 	dxGame.DrawString(&fonts[0], L"abgABG°¡³ª´ê", 1280, 420, 600, 50, 1);
 	dxGame.DrawString(&fonts[0], L"abgABG°¡³ª´ê", 1280, 520, 600, 50, 2);
 	dxGame.DrawString(&fonts[0], L"abgABG°¡³ª´êfbewvbewbvjrvberkb", 1280, 620, 600, 50, 2);
+	dxGame.DrawString(&fonts[0], L"abgABG°¡³ª´êfbewvbewbvjrvberkb", 1280, 620, 600, 50, 2);
+	dxGame.DrawString(&fonts[0], L"abgABG°¡³ª´êfbewvbewbvjrvberkb", 1280, 620, 600, 50, 2);
+	dxGame.DrawString(&fonts[0], L"abgABG°¡³ª´êfbewvbewbvjrvberkb", 1280, 620, 600, 50, 2);
+	dxGame.DrawString(&fonts[0], L"abgABG°¡³ª´êfbewvbewbvjrvberkb", 1280, 620, 600, 50, 2);
+	dxGame.DrawString(&fonts[0], L"abgABG°¡³ª´êfbewvbewbvjrvberkb", 1280, 620, 600, 50, 2);
+	dxGame.DrawString(&fonts[0], L"abgABG°¡³ª´êfbewvbewbvjrvberkb", 1280, 620, 600, 50, 2);
+	dxGame.DrawString(&fonts[0], L"abgABG°¡³ª´êfbewvbewbvjrvberkb", 1280, 620, 600, 50, 2);
+	dxGame.DrawString(&fonts[0], L"abgABG°¡³ª´êfbewvbewbvjrvberkb", 1280, 620, 600, 50, 2);
+	dxGame.DrawString(&fonts[0], L"abgABG°¡³ª´êfbewvbewbvjrvberkb", 1280, 620, 600, 50, 2);
+	dxGame.DrawString(&fonts[0], L"abgABG°¡³ª´êfbewvbewbvjrvberkb", 1280, 620, 600, 50, 2);
+	dxGame.DrawString(&fonts[0], L"abgABG°¡³ª´êfbewvbewbvjrvberkb", 1280, 620, 600, 50, 2);
+	dxGame.DrawString(&fonts[0], L"abgABG°¡³ª´êfbewvbewbvjrvberkb", 1280, 620, 600, 50, 2);
+	dxGame.DrawString(&fonts[0], L"abgABG°¡³ª´êfbewvbewbvjrvberkb", 1280, 620, 600, 50, 2);
+	dxGame.DrawString(&fonts[0], L"abgABG°¡³ª´êfbewvbewbvjrvberkb", 1280, 620, 600, 50, 2);
+	dxGame.DrawString(&fonts[0], L"abgABG°¡³ª´êfbewvbewbvjrvberkb", 1280, 620, 600, 50, 2);
+	dxGame.DrawString(&fonts[0], L"abgABG°¡³ª´êfbewvbewbvjrvberkb", 1280, 620, 600, 50, 2);
+	dxGame.DrawString(&fonts[0], L"abgABG°¡³ª´êfbewvbewbvjrvberkb", 1280, 620, 600, 50, 2);
+	dxGame.DrawString(&fonts[0], L"abgABG°¡³ª´êfbewvbewbvjrvberkb", 1280, 620, 600, 50, 2);
+	dxGame.DrawString(&fonts[0], L"abgABG°¡³ª´êfbewvbewbvjrvberkb", 1280, 620, 600, 50, 2);
+	dxGame.DrawString(&fonts[0], L"abgABG°¡³ª´êfbewvbewbvjrvberkb", 1280, 620, 600, 50, 2);
+	dxGame.DrawString(&fonts[0], L"abgABG°¡³ª´êfbewvbewbvjrvberkb", 1280, 620, 600, 50, 2);
+	dxGame.DrawString(&fonts[0], L"abgABG°¡³ª´êfbewvbewbvjrvberkb", 1280, 620, 600, 50, 2);
+	dxGame.DrawString(&fonts[0], L"abgABG°¡³ª´êfbewvbewbvjrvberkb", 1280, 620, 600, 50, 2);
+	dxGame.DrawString(&fonts[0], L"abgABG°¡³ª´êfbewvbewbvjrvberkb", 1280, 620, 600, 50, 2);
+	dxGame.DrawString(&fonts[0], L"abgABG°¡³ª´êfbewvbewbvjrvberkb", 1280, 620, 600, 50, 2);
+	dxGame.DrawString(&fonts[0], L"abgABG°¡³ª´êfbewvbewbvjrvberkb", 1280, 620, 600, 50, 2);
+	dxGame.DrawString(&fonts[0], L"abgABG°¡³ª´êfbewvbewbvjrvberkb", 1280, 620, 600, 50, 2);
+	dxGame.DrawString(&fonts[0], L"abgABG°¡³ª´êfbewvbewbvjrvberkb", 1280, 620, 600, 50, 2);
+	dxGame.DrawString(&fonts[0], L"abgABG°¡³ª´êfbewvbewbvjrvberkb", 1280, 620, 600, 50, 2);
+	dxGame.DrawString(&fonts[0], L"abgABG°¡³ª´êfbewvbewbvjrvberkb", 1280, 620, 600, 50, 2);
+	dxGame.DrawString(&fonts[0], L"abgABG°¡³ª´êfbewvbewbvjrvberkb", 1280, 620, 600, 50, 2);
+	dxGame.DrawString(&fonts[0], L"abgABG°¡³ª´êfbewvbewbvjrvberkb", 1280, 620, 600, 50, 2);
+	dxGame.DrawString(&fonts[0], L"abgABG°¡³ª´êfbewvbewbvjrvberkb", 1280, 620, 600, 50, 2);
+	dxGame.EndString();
+
+	
+	//dxGame.sprite->Draw(fonts[0].glyphTexture, 0, 0, 0, 0xFFFFFFFF);
 	dxGame.EndSprite();
 	dxGame.EndScene();
 }
 
 CSVFont font;
+CSVFont *font2;
 VOID Init() {
-	//wcscpy(font.fontPath, L"C:\\Windows\\fonts\\Gaesung.ttf");
-	wcscpy(font.fontPath, L"C:\\Windows\\fonts\\gulim.ttc");
+	wcscpy(font.fontPath, L"C:\\Windows\\fonts\\Gaesung.ttf");
 	wcscpy(font.fontTexturePath, L"C:\\Users\\kuna\\Documents\\Visual Studio 2010\\Projects\\dxfreetype\\silver128.png");
 	// need DXTexture...
-	font.fontHeight = 80;
+	font.fontHeight = 60;
 	font.borderWidth = 5;
 
 	fonts[0].fontData = &font;
 	if (!fonts[0].InitDXFont(dxGame.GetD3D9Device())) {
+		MSGBOX_ERROR(hWnd, L"Font initalizing failed!");
+	}
+	
+	font2 = new CSVFont(font);
+	font2->fontHeight = 10;
+	wcscpy(font2->fontPath, L"C:\\Windows\\fonts\\gulim.ttc");
+
+	fonts[1].fontData = font2;
+	if (!fonts[1].InitDXFont(dxGame.GetD3D9Device())) {
 		MSGBOX_ERROR(hWnd, L"Font initalizing failed!");
 	}
 }
@@ -110,6 +165,7 @@ INT WINAPI wWinMain( HINSTANCE hInst, HINSTANCE, LPWSTR, INT )
     }
 
 	// clear program...?
+	fonts[0].Release();
 	dxGame.Release();
 
 	return 0;
